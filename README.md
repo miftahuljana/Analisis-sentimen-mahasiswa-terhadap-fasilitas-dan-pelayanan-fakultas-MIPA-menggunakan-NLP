@@ -40,7 +40,7 @@ NLP Preprocessing (custom preprocessing.py)
 # ⚙️ Cara Menjalankan Project
 
 1. Install Python & Laragon (opsional)
-2. 
+
 Pastikan Python sudah terinstall di komputer.
 
 3. Install library yang dibutuhkan
