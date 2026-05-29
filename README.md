@@ -4,14 +4,20 @@ Project ini digunakan untuk menganalisis opini mahasiswa terhadap fasilitas dan 
 
 # 🚀 Fitur
 Upload dataset komentar mahasiswa (CSV)
+
 Preprocessing teks menggunakan NLP
+
 Klasifikasi sentimen (Positif, Negatif, Netral)
+
 Model Machine Learning (Naive Bayes)
 
 # Visualisasi data:
 Menampilkan hasil akurasi model
+
 Grafik distribusi sentimen
+
 WordCloud setiap sentimen
+
 Tampilan hasil analisis dalam web
 
 # 🛠️ Teknologi yang Digunakan
