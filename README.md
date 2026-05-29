@@ -41,25 +41,25 @@ NLP Preprocessing (custom preprocessing.py)
 
 1. Install Python & Laragon (opsional)
 
-Pastikan Python sudah terinstall di komputer.
+   Pastikan Python sudah terinstall di komputer.
 
 3. Install library yang dibutuhkan
 
-Jalankan di terminal:
+   Jalankan di terminal:
 
-pip install flask pandas scikit-learn sastrawi matplotlib wordcloud
+      pip install flask pandas scikit-learn sastrawi matplotlib wordcloud
 
-python.exe -m pip install --upgrade pip  
+      python.exe -m pip install --upgrade pip  
 
 3. Jalankan project
 
-Masuk ke folder project:
+   Masuk ke folder project:
 
-cd sentiment-mipa  
+      cd sentiment-mipa  
 
-Lalu jalankan:
+   Lalu jalankan:
 
-python app.py
+      python app.py
 
 4. Buka di browser
    
@@ -69,9 +69,11 @@ python app.py
 
 File CSV harus memiliki kolom:
 
-komentar                        sentimen
-Ruang kelas nyaman	            positif
-Wifi sering error	              negatif
+komentar                                       sentimen
+
+Ruang kelas nyaman	                          positif
+
+Wifi sering error	                             negatif
 
 # 📊 Output Sistem
 
