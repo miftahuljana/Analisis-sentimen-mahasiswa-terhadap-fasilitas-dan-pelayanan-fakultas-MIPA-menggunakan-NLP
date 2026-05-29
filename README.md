@@ -69,11 +69,13 @@ NLP Preprocessing (custom preprocessing.py)
 
 File CSV harus memiliki kolom:
 
-komentar                                       sentimen
+| komentar            | sentimen |
+|---------------------|----------|
+| Ruang kelas nyaman  | positif  | 
+| sering Wifi error   | negatif  | 
 
-Ruang kelas nyaman	                          positif
-
-Wifi sering error	                             negatif
+komentar: Ruang kelas nyaman, sering Wifierror
+sentimen: positif, negatif
 
 # 📊 Output Sistem
 
@@ -91,18 +93,22 @@ Setelah upload dataset, sistem akan menghasilkan:
 
 Project ini dibuat untuk:
 
-Menganalisis opini mahasiswa terhadap fasilitas kampus
+1. Menganalisis opini mahasiswa terhadap fasilitas kampus
 
-Mengimplementasikan NLP dalam studi kasus nyata
+2. Mengimplementasikan NLP dalam studi kasus nyata
 
-Menerapkan Machine Learning (Naive Bayes)
+3. Menerapkan Machine Learning (Naive Bayes)
 
-Membuat sistem analisis berbasis web
+4. Membuat sistem analisis berbasis web
 
 # 👨‍💻 Catatan
+
 Project ini masih bisa dikembangkan lebih lanjut seperti:
 
 Dashboard interaktif
+
 Export laporan PDF
+
 Database MySQL
+
 Login admin
