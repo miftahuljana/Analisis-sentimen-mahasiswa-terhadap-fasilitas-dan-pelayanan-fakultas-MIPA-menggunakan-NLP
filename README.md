@@ -12,6 +12,7 @@ Klasifikasi sentimen (Positif, Negatif, Netral)
 Model Machine Learning (Naive Bayes)
 
 # Visualisasi data:
+
 Menampilkan hasil akurasi model
 
 Grafik distribusi sentimen
@@ -21,7 +22,9 @@ WordCloud setiap sentimen
 Tampilan hasil analisis dalam web
 
 # 🛠️ Teknologi yang Digunakan
+
 Python
+
 Flask
 Pandas
 Scikit-Learn
