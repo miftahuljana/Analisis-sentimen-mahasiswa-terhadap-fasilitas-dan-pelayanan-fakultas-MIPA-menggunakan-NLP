@@ -74,9 +74,6 @@ File CSV harus memiliki kolom:
 | Ruang kelas nyaman  | positif  | 
 | sering Wifi error   | negatif  | 
 
-komentar: Ruang kelas nyaman, sering Wifierror
-sentimen: positif, negatif
-
 # 📊 Output Sistem
 
 Setelah upload dataset, sistem akan menghasilkan:
