@@ -26,34 +26,47 @@ Tampilan hasil analisis dalam web
 Python
 
 Flask
+
 Pandas
+
 Scikit-Learn
+
 Matplotlib
+
 WordCloud
+
 NLP Preprocessing (custom preprocessing.py)
 
 # ⚙️ Cara Menjalankan Project
+
 1. Install Python & Laragon (opsional)
+2. 
 Pastikan Python sudah terinstall di komputer.
 
-2. Install library yang dibutuhkan
+3. Install library yang dibutuhkan
+
 Jalankan di terminal:
 
 pip install flask pandas scikit-learn sastrawi matplotlib wordcloud
-python.exe -m pip install --upgrade pip   
+
+python.exe -m pip install --upgrade pip  
 
 3. Jalankan project
+
 Masuk ke folder project:
 
 cd sentiment-mipa  
 
 Lalu jalankan:
+
 python app.py
 
 4. Buka di browser
+   
    http://127.0.0.1:5001/
 
 # 📂 Format Dataset
+
 File CSV harus memiliki kolom:
 
 komentar                        sentimen
@@ -65,8 +78,11 @@ Wifi sering error	              negatif
 Setelah upload dataset, sistem akan menghasilkan:
 
 🎯 Akurasi model Naive Bayes
+
 📈 Grafik distribusi sentimen
+
 ☁️ WordCloud Positif, Negatif, Netral
+
 📋 Data hasil klasifikasi
 
 # 🎯 Tujuan Project
@@ -74,8 +90,11 @@ Setelah upload dataset, sistem akan menghasilkan:
 Project ini dibuat untuk:
 
 Menganalisis opini mahasiswa terhadap fasilitas kampus
+
 Mengimplementasikan NLP dalam studi kasus nyata
+
 Menerapkan Machine Learning (Naive Bayes)
+
 Membuat sistem analisis berbasis web
 
 # 👨‍💻 Catatan
