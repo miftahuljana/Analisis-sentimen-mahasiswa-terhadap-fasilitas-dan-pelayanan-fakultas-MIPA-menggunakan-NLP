@@ -1,17 +1,17 @@
 import qrcode
 import os
 
-os.makedirs(
-    'static/qrcode',
-    exist_ok=True
-)
+def generate_qr(url):
+    path = "static/qrcode"
+    os.makedirs(path, exist_ok=True)
 
-url = "http://192.168.1.89:5001"
+    img = qrcode.make(url)
+    img.save(os.path.join(path, "ngrok_qr.png"))
 
-img = qrcode.make(url)
+    print("QR dibuat untuk:", url)
 
-img.save(
-    "static/qrcode/web_mipa.png"
-)
 
-print("QR Code berhasil dibuat")
+if __name__ == "__main__":
+    # WAJIB pakai URL NGROK AKTIF
+    url = "https://celtic-freeing-ungodly.ngrok-free.dev"
+    generate_qr(url)

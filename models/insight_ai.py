@@ -5,15 +5,13 @@ def generate_insight():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Hitung sentimen
     cursor.execute("""
-    SELECT sentimen, COUNT(*)
-    FROM hasil_sentimen
-    GROUP BY sentimen
+        SELECT sentimen, COUNT(*)
+        FROM hasil_sentimen
+        GROUP BY sentimen
     """)
 
     data = cursor.fetchall()
-
     conn.close()
 
     positif = 0
@@ -21,13 +19,10 @@ def generate_insight():
     netral = 0
 
     for row in data:
-
         if row[0] == "Positif":
             positif = row[1]
-
         elif row[0] == "Negatif":
             negatif = row[1]
-
         elif row[0] == "Netral":
             netral = row[1]
 
@@ -41,28 +36,25 @@ def generate_insight():
     persen_netral = round((netral/total)*100,2)
 
     insight = f"""
-    Berdasarkan analisis terhadap {total} komentar mahasiswa:
+Berdasarkan analisis terhadap {total} komentar mahasiswa:
 
-    Sentimen Positif : {persen_positif}%
-    Sentimen Negatif : {persen_negatif}%
-    Sentimen Netral : {persen_netral}%
+- Sentimen Positif : {persen_positif}%
+- Sentimen Negatif : {persen_negatif}%
+- Sentimen Netral : {persen_netral}%
 
-    """
+"""
 
     if positif > negatif:
-
         insight += """
-        Mayoritas mahasiswa memberikan penilaian positif terhadap fasilitas dan pelayanan Fakultas MIPA.
+Mayoritas mahasiswa memberikan penilaian POSITIF terhadap fasilitas dan pelayanan Fakultas MIPA.
 
-        Fakultas disarankan mempertahankan kualitas layanan yang sudah baik.
-        """
-
+Rekomendasi: Pertahankan kualitas layanan yang sudah baik.
+"""
     else:
-
         insight += """
-        Sentimen negatif masih cukup tinggi.
+Sentimen NEGATIF masih cukup tinggi.
 
-        Fakultas perlu melakukan evaluasi terhadap fasilitas dan pelayanan yang sering dikeluhkan mahasiswa.
-        """
+Rekomendasi: Perlu evaluasi fasilitas dan pelayanan yang dikeluhkan mahasiswa.
+"""
 
     return insight

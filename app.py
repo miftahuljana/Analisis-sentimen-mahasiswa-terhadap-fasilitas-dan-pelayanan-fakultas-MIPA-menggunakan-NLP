@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import os
 import pandas as pd
+import qrcode
+from flask import request
 
 # Database
 from config import conn, cursor
@@ -29,6 +31,18 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/')
 def dashboard():
+
+    url = request.host_url  # otomatis ngrok / localhost
+
+    import qrcode
+    import os
+
+    path = "static/qrcode"
+    os.makedirs(path, exist_ok=True)
+
+    img = qrcode.make(url)
+    img.save(os.path.join(path, "ngrok_qr.png"))
+
     return render_template('dashboard.html')
 
 
@@ -114,7 +128,8 @@ def upload():
 
 @app.route('/hasil')
 def hasil():
-    return render_template('hasil.html')
+    insight = generate_insight()
+    return render_template('hasil.html', insight=insight)
 
 
 # =========================
@@ -201,4 +216,4 @@ def insight():
 # =========================
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=8080, debug=False)

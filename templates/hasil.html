@@ -2,45 +2,31 @@
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="result-header">
+    <h1>Hasil Analisis Sentimen</h1>
+    <p>Visualisasi & Insight dari data mahasiswa</p>
+</div>
 
-    <div class="card shadow p-5">
+<!-- INSIGHT AI -->
+<div class="glass-box">
+    <h2>🧠 Insight AI</h2>
+    <pre style="white-space:pre-line">{{ insight }}</pre>
+</div>
 
-        <h1 class="text-center">
-            HASIL ANALISIS SENTIMEN
-        </h1>
+<!-- MENU BUTTON (SEPERTI CARD) -->
+<div class="menu-grid">
 
-        <hr>
+    <a href="/grafik" class="menu-card">
+        📊 Grafik
+    </a>
 
-        <div class="row">
+    <a href="/wordcloud" class="menu-card">
+        ☁ WordCloud
+    </a>
 
-            <div class="col-md-3">
-                <a href="/grafik" class="btn btn-primary w-100">
-                    Grafik
-                </a>
-            </div>
-
-            <div class="col-md-3">
-                <a href="/wordcloud" class="btn btn-success w-100">
-                    WordCloud
-                </a>
-            </div>
-
-            <div class="col-md-3">
-                <a href="/tabel" class="btn btn-warning w-100">
-                    Tabel Hasil
-                </a>
-            </div>
-
-            <div class="col-md-3">
-                <a href="/insight" class="btn btn-danger w-100">
-                    Insight AI
-                </a>
-            </div>
-
-        </div>
-
-    </div>
+    <a href="/tabel" class="menu-card">
+        📄 Tabel Hasil
+    </a>
 
 </div>
 
