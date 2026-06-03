@@ -1,57 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hasil Analisis</title>
+{% extends 'layout.html' %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-</head>
-<body>
+{% block content %}
 
 <div class="container mt-5">
 
-    <h2 class="mb-4">
-        Hasil Analisis Sentimen
-    </h2>
+    <div class="card shadow p-5">
 
-    <div class="alert alert-success">
-        Akurasi Model:
-        <strong>{{ accuracy }}%</strong>
+        <h1 class="text-center">
+            HASIL ANALISIS SENTIMEN
+        </h1>
+
+        <hr>
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <a href="/grafik" class="btn btn-primary w-100">
+                    Grafik
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/wordcloud" class="btn btn-success w-100">
+                    WordCloud
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/tabel" class="btn btn-warning w-100">
+                    Tabel Hasil
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/insight" class="btn btn-danger w-100">
+                    Insight AI
+                </a>
+            </div>
+
+        </div>
+
     </div>
-
-    <h4>Grafik Sentimen</h4>
-
-    <img src="/{{ chart }}" class="img-fluid mb-4">
-
-    <h4>Wordcloud</h4>
-
-    <img src="{{ url_for('static', filename='wordcloud/positif.png') }}">
-
-    <h4>Tabel Hasil</h4>
-
-    <table class="table table-bordered">
-
-        <thead>
-            <tr>
-                <th>Komentar</th>
-                <th>Sentimen</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {% for row in tables %}
-            <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-            </tr>
-            {% endfor %}
-
-        </tbody>
-
-    </table>
 
 </div>
 
-</body>
-</html>
+{% endblock %}

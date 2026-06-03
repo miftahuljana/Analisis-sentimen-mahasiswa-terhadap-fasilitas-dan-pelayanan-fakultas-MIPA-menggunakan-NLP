@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-center">
+            WordCloud Sentimen
+        </h2>
+
+        <hr>
+
+        <div class="row">
+
+            <div class="col-md-4 text-center">
+
+                <h4>Positif</h4>
+
+                <img
+                src="{{ url_for('static', filename='wordcloud/positif.png') }}"
+                class="img-fluid">
+
+            </div>
+
+            <div class="col-md-4 text-center">
+
+                <h4>Negatif</h4>
+
+                <img
+                src="{{ url_for('static', filename='wordcloud/positif.png') }}"
+                class="img-fluid">
+            </div>
+
+            <div class="col-md-4 text-center">
+
+                <h4>Netral</h4>
+
+                <img
+                src="{{ url_for('static', filename='wordcloud/netral.png') }}"
+                class="img-fluid">
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <a href="/hasil"
+           class="btn btn-secondary">
+
+           Kembali
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

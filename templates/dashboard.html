@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="card shadow p-5">
+
+    <h1 class="title">
+        Analisis Sentimen Mahasiswa Terhadap
+        Fasilitas dan Pelayanan Fakultas MIPA
+    </h1>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-md-8">
+
+            <form
+                method="POST"
+                action="/upload"
+                enctype="multipart/form-data">
+
+                <label class="form-label">
+                    Upload Dataset CSV
+                </label>
+
+                <input
+                    type="file"
+                    name="dataset"
+                    class="form-control"
+                    required>
+
+                <br>
+
+                <button
+                    class="btn btn-primary">
+
+                    Analisis
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="card mt-4 shadow">
+
+    <div class="card-body text-center">
+
+        <h4>Akses Melalui Smartphone</h4>
+
+        <img
+        src="{{ url_for('static',
+        filename='qrcode/web_mipa.png') }}"
+        width="250">
+
+        <p class="mt-3">
+            Scan QR Code menggunakan kamera HP
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,124 +1,204 @@
 from flask import Flask, render_template, request
-import pandas as pd
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from preprocessing import preprocess_text
 import os
+import pandas as pd
+
+# Database
+from config import conn, cursor
+
+# NLP
+from models.wordcloud_generator import generate_wordcloud
+from models.preprocessing import preprocess_text
+from models.sentiment_model import predict_sentiment
+from models.insight_ai import generate_insight
+
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'dataset'
+# =========================
+# Folder Upload
+# =========================
+
+UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# =========================
+# Dashboard
+# =========================
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def dashboard():
+    return render_template('dashboard.html')
 
+
+# =========================
+# Upload & Analisis
+# =========================
 
 @app.route('/upload', methods=['POST'])
 def upload():
 
-    file = request.files['file']
+    if 'dataset' not in request.files:
+        return "File tidak ditemukan"
 
-    if file:
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filepath)
+    file = request.files['dataset']
 
+    if file.filename == '':
+        return "Pilih file terlebih dahulu"
+
+    filepath = os.path.join(
+        app.config['UPLOAD_FOLDER'],
+        file.filename
+    )
+
+    file.save(filepath)
+
+    try:
+
+        # Baca CSV
         df = pd.read_csv(filepath)
 
-        # =========================
-        # PREPROCESSING
-        # =========================
-        df['sentimen'] = df['sentimen'].astype(str).str.lower().str.strip()
-        df['clean'] = df['komentar'].astype(str).apply(preprocess_text)
+        # Pastikan kolom komentar ada
+        if 'komentar' not in df.columns:
+            return "Kolom 'komentar' tidak ditemukan pada file CSV"
 
-        # =========================
-        # TF-IDF + MODEL
-        # =========================
-        tfidf = TfidfVectorizer()
-        X = tfidf.fit_transform(df['clean'])
-        y = df['sentimen']
+        hasil = []
 
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42
-        )
+        # Hapus data lama
+        cursor.execute("DELETE FROM hasil_sentimen")
+        conn.commit()
 
-        model = MultinomialNB()
-        model.fit(X_train, y_train)
+        # Proses semua komentar
+        for komentar in df['komentar']:
 
-        y_pred = model.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
+            clean_text = preprocess_text(komentar)
 
-        # =========================
-        # GRAFIK SENTIMEN
-        # =========================
-        sentiment_count = df['sentimen'].value_counts()
+            sentimen = predict_sentiment(clean_text)
 
-        plt.figure(figsize=(6, 4))
-        sentiment_count.plot(kind='bar')
-        plt.title('Grafik Sentimen')
-        plt.xlabel('Sentimen')
-        plt.ylabel('Jumlah')
+            # Simpan ke database
+            cursor.execute("""
+                INSERT INTO hasil_sentimen
+                (
+                    komentar,
+                    preprocessing,
+                    sentimen
+                )
+                VALUES (?, ?, ?)
+            """,
+            (
+                komentar,
+                clean_text,
+                sentimen
+            ))
 
-        chart_path = 'static/charts/chart.png'
-        plt.savefig(chart_path)
-        plt.close()
+            hasil.append({
+                'komentar': komentar,
+                'preprocessing': clean_text,
+                'sentimen': sentimen
+            })
 
-        # =========================
-        # WORDCLOUD FUNCTION
-        # =========================
-        def safe_wordcloud(text, path):
-            if not text.strip():
-                text = "kosong"
+        conn.commit()
+        generate_wordcloud()
 
-            wc = WordCloud(
-                width=800,
-                height=400,
-                background_color='white'
-            ).generate(text)
+        # Setelah analisis selesai
+        return render_template('hasil.html')
 
-            wc.to_file(path)
-
-        # =========================
-        # BUAT TEXT PER SENTIMEN
-        # =========================
-        positif_text = " ".join(
-            df[df['sentimen'].str.contains("positif", na=False)]['clean']
-        )
-
-        negatif_text = " ".join(
-            df[df['sentimen'].str.contains("negatif", na=False)]['clean']
-        )
-
-        netral_text = " ".join(
-            df[df['sentimen'].str.contains("netral", na=False)]['clean']
-        )
-
-        # =========================
-        # WORDCLOUD SAVE
-        # =========================
-        safe_wordcloud(positif_text, 'static/wordcloud/positif.png')
-        safe_wordcloud(negatif_text, 'static/wordcloud/negatif.png')
-        safe_wordcloud(netral_text, 'static/wordcloud/netral.png')
-
-        # =========================
-        # DATA TABLE
-        # =========================
-        hasil = df[['komentar', 'sentimen']].head(20).values.tolist()
-
-        return render_template(
-            'hasil.html',
-            accuracy=round(accuracy * 100, 2),
-            tables=hasil,
-            chart=chart_path
-        )
+    except Exception as e:
+        return f"Terjadi kesalahan: {e}"
 
 
-if __name__ == '__main__':
-    print("RUNNING FLASK...")
-    app.run(debug=True, port=5001)
+# =========================
+# Halaman Hasil
+# =========================
+
+@app.route('/hasil')
+def hasil():
+    return render_template('hasil.html')
+
+
+# =========================
+# Grafik
+# =========================
+
+@app.route('/grafik')
+def grafik():
+
+    cursor.execute("""
+        SELECT sentimen,
+               COUNT(*) as jumlah
+        FROM hasil_sentimen
+        GROUP BY sentimen
+    """)
+
+    data = cursor.fetchall()
+
+    labels = []
+    values = []
+
+    for row in data:
+        labels.append(row[0])
+        values.append(row[1])
+
+    return render_template(
+        'grafik.html',
+        labels=labels,
+        values=values
+    )
+
+
+# =========================
+# WordCloud
+# =========================
+
+@app.route('/wordcloud')
+def wordcloud():
+
+    return render_template(
+        'wordcloud.html'
+    )
+
+
+# =========================
+# Tabel Hasil
+# =========================
+
+@app.route('/tabel')
+def tabel():
+
+    cursor.execute("""
+        SELECT komentar,
+               preprocessing,
+               sentimen
+        FROM hasil_sentimen
+    """)
+
+    hasil = cursor.fetchall()
+
+    return render_template(
+        'tabel.html',
+        hasil=hasil
+    )
+
+
+# =========================
+# Insight AI
+# =========================
+
+@app.route('/insight')
+def insight():
+
+    hasil_insight = generate_insight()
+
+    return render_template(
+        'insight.html',
+        insight=hasil_insight
+    )
+
+
+# =========================
+# Jalankan Flask
+# =========================
+
+if __name__ == "__main__":
+    app.run()
