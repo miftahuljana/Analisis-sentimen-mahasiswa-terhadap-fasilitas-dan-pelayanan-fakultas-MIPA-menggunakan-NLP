@@ -37,6 +37,8 @@ WordCloud
 
 NLP Preprocessing (custom preprocessing.py)
 
+Ngrok
+
 # ⚙️ Cara Menjalankan Project
 
 1. Install Python & Laragon (opsional)
@@ -49,9 +51,19 @@ NLP Preprocessing (custom preprocessing.py)
 
       pip install flask pandas scikit-learn sastrawi matplotlib wordcloud
 
-      python.exe -m pip install --upgrade pip  
+      python.exe -m pip install --upgrade pip
 
-3. Jalankan project
+4. Instal ngrok
+   
+   Jalankan di ngrok.exe
+   
+      ngrok config add-authtoken "NAMA TOKEN NGROK KAMU"
+   
+   Buka projek kamu - new terminal jalankan
+   
+      ngrok http 8080    
+
+6. Jalankan project
 
    Masuk ke folder project:
 
@@ -63,7 +75,7 @@ NLP Preprocessing (custom preprocessing.py)
 
 4. Buka di browser
    
-   http://127.0.0.1:5001/
+   http://127.0.0.1:8080/
 
 # 📂 Format Dataset
 
