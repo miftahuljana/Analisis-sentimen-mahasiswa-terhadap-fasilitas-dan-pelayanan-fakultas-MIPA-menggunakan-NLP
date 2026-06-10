@@ -2,31 +2,95 @@
 
 {% block content %}
 
-<div class="card">
+<section class="hero">
 
-    <h1 class="title">
-        Analisis Sentimen Mahasiswa MIPA
-    </h1>
+    <div class="overlay"></div>
 
-    <form method="POST" action="/upload" enctype="multipart/form-data">
+    <div class="hero-content">
 
-        <label>Upload Dataset CSV</label>
-        <input type="file" name="dataset" required>
+        <h1>Analisis Sentimen Mahasiswa</h1>
 
-        <button class="btn-primary">
-            Mulai Analisis
-        </button>
+        <p>
+            Evaluasi fasilitas dan pelayanan Fakultas MIPA
+            menggunakan NLP dan Artificial Intelligence
+        </p>
 
-    </form>
+        <div class="upload-box">
+
+            <form
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
+                id="uploadForm">
+
+                <input
+                    type="file"
+                    name="dataset"
+                    class="form-control"
+                    required>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="btn btn-success btn-lg">
+
+                    Analisis Sentimen
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Loading -->
+<div id="loading-screen" style="display:none;">
+
+    <div class="loader"></div>
+
+    <h3>Memproses Analisis Sentimen...</h3>
+
+    <p>
+        Preprocessing → NLP → Sentimen →
+        Grafik → WordCloud → Insight AI
+    </p>
 
 </div>
 
-<!-- QR -->
-<div class="card qr-box">
 
-    <h3>Akses via Smartphone</h3>
+<script>
 
-    <img src="/static/qrcode/ngrok_qr.png?v=5">
+document.addEventListener("DOMContentLoaded", function(){
+
+    const form = document.getElementById("uploadForm");
+
+    if(form){
+
+        form.addEventListener("submit", function(){
+
+            document.getElementById("loading-screen")
+            .style.display = "flex";
+
+        });
+
+    }
+
+});
+
+</script>
+
+<!-- QR CODE NGROK -->
+
+<div class="qr-code">
+
+    <img 
+    src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://celtic-freeing-ungodly.ngrok-free.dev "
+    alt="QR Code">
 
 </div>
 

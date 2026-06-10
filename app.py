@@ -2,17 +2,15 @@ from flask import Flask, render_template, request
 import os
 import pandas as pd
 import qrcode
-from flask import request
 
 # Database
 from config import conn, cursor
 
 # NLP
-from models.wordcloud_generator import generate_wordcloud
 from models.preprocessing import preprocess_text
 from models.sentiment_model import predict_sentiment
+from models.wordcloud_generator import generate_wordcloud
 from models.insight_ai import generate_insight
-
 
 app = Flask(__name__)
 
@@ -20,10 +18,13 @@ app = Flask(__name__)
 # Folder Upload
 # =========================
 
-UPLOAD_FOLDER = 'static/uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+UPLOAD_FOLDER = "static/uploads"
+QR_FOLDER = "static/qrcode"
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(QR_FOLDER, exist_ok=True)
 
 # =========================
 # Dashboard
@@ -32,19 +33,20 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @app.route('/')
 def dashboard():
 
-    url = request.host_url  # otomatis ngrok / localhost
+    # Generate QR Code otomatis
+    url = request.host_url
 
-    import qrcode
-    import os
-
-    path = "static/qrcode"
-    os.makedirs(path, exist_ok=True)
+    qr_path = os.path.join(
+        QR_FOLDER,
+        "ngrok_qr.png"
+    )
 
     img = qrcode.make(url)
-    img.save(os.path.join(path, "ngrok_qr.png"))
+    img.save(qr_path)
 
-    return render_template('dashboard.html')
-
+    return render_template(
+        "dashboard.html"
+    )
 
 # =========================
 # Upload & Analisis
@@ -75,22 +77,29 @@ def upload():
 
         # Pastikan kolom komentar ada
         if 'komentar' not in df.columns:
-            return "Kolom 'komentar' tidak ditemukan pada file CSV"
-
-        hasil = []
+            return "Kolom 'komentar' tidak ditemukan"
 
         # Hapus data lama
-        cursor.execute("DELETE FROM hasil_sentimen")
+        cursor.execute(
+            "DELETE FROM hasil_sentimen"
+        )
+
         conn.commit()
 
-        # Proses semua komentar
+        # =====================
+        # Proses NLP
+        # =====================
+
         for komentar in df['komentar']:
 
-            clean_text = preprocess_text(komentar)
+            clean_text = preprocess_text(
+                komentar
+            )
 
-            sentimen = predict_sentiment(clean_text)
+            sentimen = predict_sentiment(
+                clean_text
+            )
 
-            # Simpan ke database
             cursor.execute("""
                 INSERT INTO hasil_sentimen
                 (
@@ -98,7 +107,10 @@ def upload():
                     preprocessing,
                     sentimen
                 )
-                VALUES (?, ?, ?)
+                VALUES
+                (
+                    ?, ?, ?
+                )
             """,
             (
                 komentar,
@@ -106,34 +118,95 @@ def upload():
                 sentimen
             ))
 
-            hasil.append({
-                'komentar': komentar,
-                'preprocessing': clean_text,
-                'sentimen': sentimen
-            })
-
         conn.commit()
+
+        # =====================
+        # Generate WordCloud
+        # =====================
+
         generate_wordcloud()
 
-        # Setelah analisis selesai
-        return render_template('hasil.html')
+        # =====================
+        # Statistik Dashboard
+        # =====================
+
+        total = len(df)
+
+        cursor.execute("""
+        SELECT COUNT(*)
+        FROM hasil_sentimen
+        WHERE sentimen='Positif'
+        """)
+        positif = cursor.fetchone()[0]
+
+        cursor.execute("""
+        SELECT COUNT(*)
+        FROM hasil_sentimen
+        WHERE sentimen='Negatif'
+        """)
+        negatif = cursor.fetchone()[0]
+
+        cursor.execute("""
+        SELECT COUNT(*)
+        FROM hasil_sentimen
+        WHERE sentimen='Netral'
+        """)
+        netral = cursor.fetchone()[0]
+
+        return render_template(
+            "hasil.html",
+            total=total,
+            positif=positif,
+            negatif=negatif,
+            netral=netral
+        )
 
     except Exception as e:
         return f"Terjadi kesalahan: {e}"
 
-
 # =========================
-# Halaman Hasil
+# Hasil Analisis
 # =========================
 
 @app.route('/hasil')
 def hasil():
-    insight = generate_insight()
-    return render_template('hasil.html', insight=insight)
 
+    cursor.execute(
+        "SELECT COUNT(*) FROM hasil_sentimen"
+    )
+    total = cursor.fetchone()[0]
+
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM hasil_sentimen
+    WHERE sentimen='Positif'
+    """)
+    positif = cursor.fetchone()[0]
+
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM hasil_sentimen
+    WHERE sentimen='Negatif'
+    """)
+    negatif = cursor.fetchone()[0]
+
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM hasil_sentimen
+    WHERE sentimen='Netral'
+    """)
+    netral = cursor.fetchone()[0]
+
+    return render_template(
+        "hasil.html",
+        total=total,
+        positif=positif,
+        negatif=negatif,
+        netral=netral
+    )
 
 # =========================
-# Grafik
+# Grafik Sentimen
 # =========================
 
 @app.route('/grafik')
@@ -152,15 +225,15 @@ def grafik():
     values = []
 
     for row in data:
+
         labels.append(row[0])
         values.append(row[1])
 
     return render_template(
-        'grafik.html',
+        "grafik.html",
         labels=labels,
         values=values
     )
-
 
 # =========================
 # WordCloud
@@ -170,9 +243,8 @@ def grafik():
 def wordcloud():
 
     return render_template(
-        'wordcloud.html'
+        "wordcloud.html"
     )
-
 
 # =========================
 # Tabel Hasil
@@ -182,19 +254,19 @@ def wordcloud():
 def tabel():
 
     cursor.execute("""
-        SELECT komentar,
-               preprocessing,
-               sentimen
+        SELECT
+        komentar,
+        preprocessing,
+        sentimen
         FROM hasil_sentimen
     """)
 
     hasil = cursor.fetchall()
 
     return render_template(
-        'tabel.html',
+        "tabel.html",
         hasil=hasil
     )
-
 
 # =========================
 # Insight AI
@@ -203,17 +275,21 @@ def tabel():
 @app.route('/insight')
 def insight():
 
-    hasil_insight = generate_insight()
+    hasil_ai = generate_insight()
 
     return render_template(
-        'insight.html',
-        insight=hasil_insight
+        "insight.html",
+        insight=hasil_ai
     )
 
-
 # =========================
-# Jalankan Flask
+# Run Flask
 # =========================
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=False)
+
+    app.run(
+        host="0.0.0.0",
+        port=5050,
+        debug=True
+    )

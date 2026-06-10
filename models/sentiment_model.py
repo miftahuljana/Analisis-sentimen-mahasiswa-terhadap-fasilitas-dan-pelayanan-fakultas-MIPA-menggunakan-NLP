@@ -17,7 +17,5 @@ def predict_sentiment(text):
     elif label == "negative":
         return "Negatif"
 
-    elif label == "neutral":
+    else:
         return "Netral"
-
-    return "Netral"

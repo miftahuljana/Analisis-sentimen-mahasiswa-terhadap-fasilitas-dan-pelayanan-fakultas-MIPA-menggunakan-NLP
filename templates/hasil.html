@@ -2,32 +2,141 @@
 
 {% block content %}
 
-<div class="result-header">
-    <h1>Hasil Analisis Sentimen</h1>
-    <p>Visualisasi & Insight dari data mahasiswa</p>
+<section class="result-page">
+
+
+<div class="container mt-5">
+
+
+    <h1 class="text-center mb-4">
+
+        HASIL ANALISIS SENTIMEN
+
+    </h1>
+
+
+    <div class="row text-center mb-5">
+
+
+       <div class="col-md-3">
+
+            <div class="card stat-card">
+
+                <h2>{{ total }}</h2>
+
+                <p>Data Komentar</p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <div class="card stat-card positif">
+
+                <h2>{{ positif }}</h2>
+
+                <p>Positif</p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <div class="card stat-card negatif">
+
+                <h2>{{ negatif }}</h2>
+
+                <p>Negatif</p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <div class="card stat-card netral">
+
+                <h2>{{ netral }}</h2>
+
+                <p>Netral</p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="row">
+
+
+        <div class="col-md-3">
+
+            <a href="/grafik" class="menu-card">
+
+                📊 Grafik
+
+            </a>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <a href="/wordcloud" class="menu-card">
+
+                ☁️ WordCloud
+
+            </a>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <a href="/tabel" class="menu-card">
+
+                📋 Tabel Hasil
+
+            </a>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <a href="/insight" class="menu-card">
+
+                🤖 Insight AI
+
+            </a>
+
+        </div>
+
+
+
+    </div>
+
+
 </div>
 
-<!-- INSIGHT AI -->
-<div class="glass-box">
-    <h2>🧠 Insight AI</h2>
-    <pre style="white-space:pre-line">{{ insight }}</pre>
-</div>
 
-<!-- MENU BUTTON (SEPERTI CARD) -->
-<div class="menu-grid">
+</section>
 
-    <a href="/grafik" class="menu-card">
-        📊 Grafik
-    </a>
-
-    <a href="/wordcloud" class="menu-card">
-        ☁ WordCloud
-    </a>
-
-    <a href="/tabel" class="menu-card">
-        📄 Tabel Hasil
-    </a>
-
-</div>
 
 {% endblock %}

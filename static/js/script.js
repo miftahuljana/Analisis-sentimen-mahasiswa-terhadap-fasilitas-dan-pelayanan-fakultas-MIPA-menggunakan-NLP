@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    let form = document.querySelector("form");
+    const form = document.getElementById("uploadForm");
 
-    if (form) {
-        form.addEventListener("submit", function () {
-            document.getElementById("loading").style.display = "block";
+    if(form){
+
+        form.addEventListener("submit", function(){
+
+            document.getElementById("loading-screen")
+                .style.display = "flex";
+
         });
+
     }
 
 });
