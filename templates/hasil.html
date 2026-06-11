@@ -4,139 +4,86 @@
 
 <section class="result-page">
 
-
 <div class="container mt-5">
 
+    <div class="result-card">
 
-    <h1 class="text-center mb-4">
+        <h1 class="text-center mb-4 text-white">
+            HASIL ANALISIS SENTIMEN
+        </h1>
 
-        HASIL ANALISIS SENTIMEN
+        <p class="text-center result-desc text-white">
+            Hasil analisis data berdasarkan proses
+            preprocessing teks dan klasifikasi sentimen
+            menggunakan NLP.
+        </p>
 
-    </h1>
+        <!-- STATISTIK -->
+        <div class="row g-3 text-center mb-5">
 
+            <div class="col-6 col-md-3">
+                <div class="card stat-card">
+                    <h2>{{ total }}</h2>
+                    <p>Data Analisis</p>
+                </div>
+            </div>
 
-    <div class="row text-center mb-5">
+            <div class="col-6 col-md-3">
+                <div class="card stat-card positif">
+                    <h2>{{ positif }}</h2>
+                    <p>Positif</p>
+                </div>
+            </div>
 
+            <div class="col-6 col-md-3">
+                <div class="card stat-card negatif">
+                    <h2>{{ negatif }}</h2>
+                    <p>Negatif</p>
+                </div>
+            </div>
 
-       <div class="col-md-3">
-
-            <div class="card stat-card">
-
-                <h2>{{ total }}</h2>
-
-                <p>Data Komentar</p>
-
+            <div class="col-6 col-md-3">
+                <div class="card stat-card netral">
+                    <h2>{{ netral }}</h2>
+                    <p>Netral</p>
+                </div>
             </div>
 
         </div>
 
+        <!-- MENU -->
+        <div class="row g-3">
 
+            <div class="col-6 col-md-3">
+                <a href="/grafik" class="menu-card">
+                    Grafik
+                </a>
+            </div>
 
-        <div class="col-md-3">
+            <div class="col-6 col-md-3">
+                <a href="/wordcloud" class="menu-card">
+                    WordCloud
+                </a>
+            </div>
 
-            <div class="card stat-card positif">
+            <div class="col-6 col-md-3">
+                <a href="/tabel" class="menu-card">
+                    Tabel Hasil
+                </a>
+            </div>
 
-                <h2>{{ positif }}</h2>
-
-                <p>Positif</p>
-
+            <div class="col-6 col-md-3">
+                <a href="/insight" class="menu-card">
+                    Insight AI
+                </a>
             </div>
 
         </div>
-
-
-
-        <div class="col-md-3">
-
-            <div class="card stat-card negatif">
-
-                <h2>{{ negatif }}</h2>
-
-                <p>Negatif</p>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="col-md-3">
-
-            <div class="card stat-card netral">
-
-                <h2>{{ netral }}</h2>
-
-                <p>Netral</p>
-
-            </div>
-
-        </div>
-
 
     </div>
-
-
-
-
-
-    <div class="row">
-
-
-        <div class="col-md-3">
-
-            <a href="/grafik" class="menu-card">
-
-                📊 Grafik
-
-            </a>
-
-        </div>
-
-
-
-        <div class="col-md-3">
-
-            <a href="/wordcloud" class="menu-card">
-
-                ☁️ WordCloud
-
-            </a>
-
-        </div>
-
-
-
-        <div class="col-md-3">
-
-            <a href="/tabel" class="menu-card">
-
-                📋 Tabel Hasil
-
-            </a>
-
-        </div>
-
-
-
-        <div class="col-md-3">
-
-            <a href="/insight" class="menu-card">
-
-                🤖 Insight AI
-
-            </a>
-
-        </div>
-
-
-
-    </div>
-
 
 </div>
 
-
 </section>
-
 
 {% endblock %}

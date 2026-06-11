@@ -2,62 +2,287 @@
 
 {% block content %}
 
+
+<section class="grafik-page">
+
+
 <div class="container mt-4">
 
-    <div class="card shadow p-4">
 
-        <h2 class="text-center">
+    <div class="grafik-card">
+
+
+        <h2 class="text-center mb-4">
+
             Grafik Hasil Sentimen
+
         </h2>
 
-        <hr>
 
-        <canvas id="sentimentChart"></canvas>
+
+        <div class="row">
+
+
+            <!-- PIE CHART -->
+
+            <div class="col-md-6">
+
+
+                <h5 class="text-center">
+
+                    Persentase Sentimen
+
+                </h5>
+
+
+                <div class="chart-box">
+
+
+                    <canvas id="pieChart"></canvas>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <!-- BAR CHART -->
+
+            <div class="col-md-6">
+
+
+                <h5 class="text-center">
+
+                    Jumlah Sentimen
+
+                </h5>
+
+
+                <div class="chart-box">
+
+
+                    <canvas id="barChart"></canvas>
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
 
         <br>
 
-        <a href="/hasil"
-           class="btn btn-secondary">
 
-            Kembali
+        <div class="text-center">
 
-        </a>
+            <a href="/hasil"
+            class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </div>
+
 
     </div>
 
+
 </div>
+
+
+</section>
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 <script>
 
-const ctx = document.getElementById(
-    'sentimentChart'
-);
 
-new Chart(ctx, {
+const labels = {{ labels|tojson }};
 
-    type: 'pie',
+const values = {{ values|tojson }};
 
-    data: {
 
-        labels: {{ labels|tojson }},
 
-        datasets: [{
 
-            data: {{ values|tojson }},
 
-            backgroundColor: [
-                '#28a745',
-                '#dc3545',
-                '#ffc107'
-            ]
+let colors = [];
 
-        }]
+
+
+labels.forEach(function(label){
+
+
+    if(label === "Positif"){
+
+        colors.push("#28a745");
+
     }
+
+
+    else if(label === "Negatif"){
+
+        colors.push("#dc3545");
+
+    }
+
+
+    else if(label === "Netral"){
+
+        colors.push("#ffc107");
+
+    }
+
 
 });
 
+
+
+
+
+// PIE CHART
+
+
+new Chart(
+
+document.getElementById('pieChart'),
+
+{
+
+
+type:'pie',
+
+
+data:{
+
+
+labels:labels,
+
+
+datasets:[{
+
+
+data:values,
+
+
+backgroundColor:colors
+
+
+}]
+
+
+},
+
+
+options:{
+
+
+responsive:true,
+
+
+maintainAspectRatio:false
+
+
+}
+
+
+}
+
+);
+
+
+
+
+
+
+// BAR CHART
+
+
+new Chart(
+
+document.getElementById('barChart'),
+
+{
+
+
+type:'bar',
+
+
+data:{
+
+
+labels:labels,
+
+
+datasets:[{
+
+
+label:"Jumlah Data",
+
+
+data:values,
+
+
+backgroundColor:colors
+
+
+}]
+
+
+},
+
+
+
+options:{
+
+
+responsive:true,
+
+
+maintainAspectRatio:false,
+
+
+scales:{
+
+
+y:{
+
+
+beginAtZero:true
+
+
+}
+
+
+}
+
+
+
+}
+
+
+}
+
+);
+
+
+
 </script>
+
+
 
 {% endblock %}

@@ -2,60 +2,277 @@
 
 {% block content %}
 
+
+<style>
+
+.wordcloud-page{
+
+
+    min-height:100vh;
+
+
+    background:
+
+
+    linear-gradient(
+
+        rgba(20,10,50,0.75),
+
+        rgba(20,10,50,0.75)
+
+    ),
+
+
+    url("{{ url_for('static', filename='images/wordcloud.jpg') }}");
+
+
+
+    background-size:cover;
+
+
+
+    background-position:center;
+
+
+
+    background-attachment:fixed;
+
+
+
+    padding:60px 0;
+
+
+
+}
+
+
+
+.wordcloud-card{
+
+
+    background:rgba(255,255,255,0.15);
+
+
+
+    backdrop-filter:blur(15px);
+
+
+
+    -webkit-backdrop-filter:blur(15px);
+
+
+
+    border-radius:25px;
+
+
+
+    padding:35px;
+
+
+
+    color:white;
+
+
+
+    border:1px solid rgba(255,255,255,.3);
+
+
+
+}
+
+
+
+.wordcloud-card h2{
+
+
+    color:white;
+
+    font-weight:bold;
+
+
+}
+
+
+
+.word-card{
+
+
+    background:rgba(255,255,255,.12);
+
+
+
+    border-radius:20px;
+
+
+
+    padding:20px;
+
+
+
+}
+
+
+
+.word-card h4{
+
+
+    color:white;
+
+
+}
+
+
+
+.word-img{
+
+
+    max-height:250px;
+
+
+
+    border-radius:15px;
+
+
+}
+
+
+
+</style>
+
+
+
+
+
+<section class="wordcloud-page">
+
+
+
 <div class="container mt-4">
 
-    <div class="card shadow p-4">
 
-        <h2 class="text-center">
+
+    <div class="wordcloud-card">
+
+
+
+        <h2 class="text-center mb-4">
+
             WordCloud Sentimen
+
         </h2>
+
+
 
         <hr>
 
+
+
         <div class="row">
 
-            <div class="col-md-4 text-center">
-
-                <h4>Positif</h4>
-
-                <img
-                src="{{ url_for('static', filename='wordcloud/positif.png') }}"
-                class="img-fluid">
-
-            </div>
 
             <div class="col-md-4 text-center">
 
-                <h4>Negatif</h4>
 
-                <img
-                src="{{ url_for('static', filename='wordcloud/positif.png') }}"
-                class="img-fluid">
+                <div class="word-card">
+
+
+                    <h4>🟢 Positif</h4>
+
+
+                    <img
+
+                    src="{{ url_for('static', filename='wordcloud/positif.png') }}"
+
+                    class="img-fluid word-img">
+
+
+                </div>
+
+
             </div>
+
+
+
+
 
             <div class="col-md-4 text-center">
 
-                <h4>Netral</h4>
 
-                <img
-                src="{{ url_for('static', filename='wordcloud/netral.png') }}"
-                class="img-fluid">
+                <div class="word-card">
+
+
+                    <h4>🔴 Negatif</h4>
+
+
+                    <img
+
+                    src="{{ url_for('static', filename='wordcloud/negatif.png') }}"
+
+                    class="img-fluid word-img">
+
+
+                </div>
+
 
             </div>
+
+
+
+
+
+            <div class="col-md-4 text-center">
+
+
+                <div class="word-card">
+
+
+                    <h4>🟡 Netral</h4>
+
+
+                    <img
+
+                    src="{{ url_for('static', filename='wordcloud/netral.png') }}"
+
+                    class="img-fluid word-img">
+
+
+                </div>
+
+
+            </div>
+
+
 
         </div>
 
+
+
         <br>
 
-        <a href="/hasil"
-           class="btn btn-secondary">
 
-           Kembali
+        <div class="text-center">
 
-        </a>
+
+            <a href="/hasil" class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+
+        </div>
+
+
 
     </div>
 
+
+
 </div>
+
+
+</section>
+
+
 
 {% endblock %}

@@ -2,41 +2,243 @@
 
 {% block content %}
 
-<div class="card shadow p-4">
 
-    <h2>Hasil Analisis Sentimen</h2>
+<section class="tabel-page">
 
-    <table class="table table-bordered">
 
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Komentar</th>
-                <th>Preprocessing</th>
-                <th>Sentimen</th>
-            </tr>
-        </thead>
+<div class="container mt-4">
 
-        <tbody>
 
-            {% for row in hasil %}
+<div class="tabel-card">
 
-            <tr>
 
-                <td>{{ loop.index }}</td>
 
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
+<h2 class="text-center">
 
-            </tr>
+Hasil Analisis Sentimen
 
-            {% endfor %}
+</h2>
 
-        </tbody>
 
-    </table>
+
+<p class="text-center tabel-info">
+
+
+Data berikut merupakan hasil analisis dari file yang telah di-upload.
+
+
+<br>
+
+
+Proses dilakukan melalui tahap:
+
+<b>Preprocessing</b>
+
+dan
+
+<b>Analisis Sentimen</b>
+
+
+<br>
+
+
+Kategori sentimen:
+
+<span class="positif-text">
+Positif
+</span>
+
+,
+
+<span class="negatif-text">
+Negatif
+</span>
+
+dan
+
+<span class="netral-text">
+Netral
+</span>
+
+
+</p>
+
+
+
+
+<hr>
+
+
+
+
+<div class="table-responsive">
+
+
+<table class="table tabel-custom">
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+
+{{ nama_kolom }}
+
+</th>
+
+
+
+<th>
+
+Preprocessing
+
+</th>
+
+
+
+<th>
+
+Analisis Sentimen
+
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+<tbody>
+
+
+
+{% for row in hasil %}
+
+
+<tr>
+
+
+
+<td>
+
+{{ row[0] }}
+
+</td>
+
+
+
+<td>
+
+{{ row[1] }}
+
+</td>
+
+
+
+<td>
+
+
+{% if row[2] == "Positif" %}
+
+
+<span class="badge bg-success">
+
+Positif
+
+</span>
+
+
+
+{% elif row[2] == "Negatif" %}
+
+
+
+<span class="badge bg-danger">
+
+Negatif
+
+</span>
+
+
+
+{% else %}
+
+
+
+<span class="badge bg-warning text-dark">
+
+Netral
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</td>
+
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+
+</table>
+
+
 
 </div>
+
+
+
+
+
+<br>
+
+
+<div class="text-center">
+
+
+<a href="/hasil"
+
+class="btn btn-secondary">
+
+
+Kembali
+
+
+</a>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
 
 {% endblock %}
